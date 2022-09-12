@@ -3,16 +3,9 @@ package edu.lernia.labb4;
 import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 import java.util.Scanner;
@@ -50,7 +43,6 @@ public class TollFeeCalculator {
                     totalFee += (getTollFeePerPassing(date) - getTollFeePerPassing(intervalStart)); 
                     System.out.println((getTollFeePerPassing(date) - getTollFeePerPassing(intervalStart)));
                     hasPayed = true; 
-                    
                 }
 
             }
