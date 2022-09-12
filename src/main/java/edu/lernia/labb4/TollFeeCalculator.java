@@ -27,26 +27,31 @@ public class TollFeeCalculator {
 
     public static int getTotalFeeCost(LocalDateTime[] dates) {
         int totalFee = 0;
+        boolean hasPayed = false; 
         LocalDateTime intervalStart = dates[0];
         for(LocalDateTime date: dates) {
             System.out.println(date.toString());
             long diffInMinutes = intervalStart.until(date, ChronoUnit.MINUTES);
-            if(diffInMinutes > 60) {
+            if(intervalStart.equals(date) || diffInMinutes > 60) {
                 totalFee += getTollFeePerPassing(date);
                 intervalStart = date;
+                hasPayed = false; 
             } else {
-                totalFee += Math.max(getTollFeePerPassing(date), getTollFeePerPassing(intervalStart));
+                if(getTollFeePerPassing(date) > getTollFeePerPassing(intervalStart) && !hasPayed) {
+                    totalFee += (getTollFeePerPassing(date) - getTollFeePerPassing(intervalStart)); 
+                    hasPayed = true; 
+                }
+                
             }
         }
-        return Math.max(totalFee, 60);
-        //returnerar Ska vara Math.min inte max, för annars returnar den aldrig mindre än 60
+        return Math.min(totalFee, 60);
+        //Ska vara Math.min inte max, för annars returnar den aldrig mindre än 60
     }
 
     public static int getTollFeePerPassing(LocalDateTime date) {
         if (isTollFreeDate(date)) return 0;
         int hour = date.getHour();
         int minute = date.getMinute();
-        System.out.println("hour : " + hour + " minute : "+minute);
         if (hour == 6 && minute >= 0 && minute <= 29) return 8;
         else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
         else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
