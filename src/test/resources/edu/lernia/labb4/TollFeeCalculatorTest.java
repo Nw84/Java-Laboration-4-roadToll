@@ -2,6 +2,13 @@ package edu.lernia.labb4;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.util.Scanner;
+import java.nio.file.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,11 +17,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDateTime;
 
 public class TollFeeCalculatorTest {
+
+    private PrintStream originalSystemOut;
+    private ByteArrayOutputStream systemOutContent;
+
+    @BeforeEach
+    void redirectSystemOutStream() {
+
+        originalSystemOut = System.out;
+
+        // given
+        systemOutContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(systemOutContent));
+    }
+
+    @AfterEach
+    void restoreSystemOutStream() {
+        System.setOut(originalSystemOut);
+    }
+
+
     @Test
     void inputAndOutputShouldBeSameLength() {
-        String dates [] = new String [2];
-        dates[0] = "2020-06-30T10:25";
-        dates[1] = "2020-06-30T10:25";
+        TollFeeCalculator.main(new String[] {"src/test/resources/Lab4.txt"});
+        
+        assertEquals(219, systemOutContent.toString().length());
+        //18 x 10 rows + 39; 
     }
 
     @Test
@@ -26,6 +54,29 @@ public class TollFeeCalculatorTest {
 
         assertEquals(18, TollFeeCalculator.getTotalFeeCost(dates));
         
+    }
+
+    @Test
+    void testingEveryTimeForCorrectResponse () {
+        LocalDateTime dates [] = new LocalDateTime[2];
+        dates[0] = LocalDateTime.of(2022, 05, 12, 21, 30, 40);
+        dates[1] = LocalDateTime.of(2022, 05, 12, 21, 52, 40);
+        
+
+        assertEquals(0, TollFeeCalculator.getTotalFeeCost(dates));
+        
+    }
+
+    @Test 
+    void maximumCostShouldBe60 () {
+        LocalDateTime dates [] = new LocalDateTime[5];
+        dates[0] = LocalDateTime.of(2022, 05, 12, 6, 38, 40);
+        dates[1] = LocalDateTime.of(2022, 05, 12, 7, 55, 40);
+        dates[2] = LocalDateTime.of(2022, 05, 12, 15, 10, 40);
+        dates[3] = LocalDateTime.of(2022, 05, 12, 16, 15, 40);
+        dates[4] = LocalDateTime.of(2022, 05, 12, 17, 45, 40);
+
+        assertEquals(60, TollFeeCalculator.getTotalFeeCost(dates));
     }
 
     @Test

@@ -3,9 +3,18 @@ package edu.lernia.labb4;
 import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 import java.util.Scanner;
 
 public class TollFeeCalculator {
@@ -39,28 +48,43 @@ public class TollFeeCalculator {
             } else {
                 if(getTollFeePerPassing(date) > getTollFeePerPassing(intervalStart) && !hasPayed) {
                     totalFee += (getTollFeePerPassing(date) - getTollFeePerPassing(intervalStart)); 
+                    System.out.println((getTollFeePerPassing(date) - getTollFeePerPassing(intervalStart)));
                     hasPayed = true; 
+                    
                 }
-                
+
             }
         }
         return Math.min(totalFee, 60);
         //Ska vara Math.min inte max, för annars returnar den aldrig mindre än 60
-    }
+    } 
 
     public static int getTollFeePerPassing(LocalDateTime date) {
         if (isTollFreeDate(date)) return 0;
         int hour = date.getHour();
         int minute = date.getMinute();
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
+        String sb = "";
+        if (hour < 10) {
+            sb += "0" + hour; 
+        } else {
+            sb += hour; 
+        }
+        if (minute < 10) {
+            sb += "0" + minute; 
+        } else {
+            sb += minute; 
+        }
+        int number = Integer.valueOf(sb);
+
+        if(number >= 600 && number <= 629) return 8;
+        else if(number >= 630 && number <= 659) return 13;
+        else if (number >= 700 && number <= 759) return 18;
+        else if (number >= 800 && number <= 829) return 13;
+        else if (number >= 830 && number <= 1459) return 8;
+        else if (number >= 1500 && number <= 1529) return 13;
+        else if (number >= 1530 && number <= 1659) return 18;
+        else if (number >= 1700 && number <= 1759) return 13;
+        else if (number >= 1800 && number <= 1829) return 8;
         else return 0;
     }
 
