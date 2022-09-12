@@ -7,9 +7,6 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.Scanner;
-import java.nio.file.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,14 +54,28 @@ public class TollFeeCalculatorTest {
     }
 
     @Test
-    void testingEveryTimeForCorrectResponse () {
-        LocalDateTime dates [] = new LocalDateTime[2];
-        dates[0] = LocalDateTime.of(2022, 05, 12, 21, 30, 40);
-        dates[1] = LocalDateTime.of(2022, 05, 12, 21, 52, 40);
-        
+    void testingEveryTimeWindowForCorrectResponse () {
+        LocalDateTime time1 = LocalDateTime.of(2022, 05, 12, 6, 29, 40);
+        LocalDateTime time2 = LocalDateTime.of(2022, 05, 12, 6, 57, 40);
+        LocalDateTime time3 = LocalDateTime.of(2022, 05, 12, 7, 55, 40);
+        LocalDateTime time4 = LocalDateTime.of(2022, 05, 12, 8, 20, 40);
+        LocalDateTime time5 = LocalDateTime.of(2022, 05, 12, 11, 30, 40);
+        LocalDateTime time6 = LocalDateTime.of(2022, 05, 12, 15, 15, 40);
+        LocalDateTime time7 = LocalDateTime.of(2022, 05, 12, 16, 15, 40);
+        LocalDateTime time8 = LocalDateTime.of(2022, 05, 12, 17, 20, 40);
+        LocalDateTime time9 = LocalDateTime.of(2022, 05, 12, 18, 15, 40);
+        LocalDateTime time10 = LocalDateTime.of(2022, 05, 12, 21, 15, 40);
 
-        assertEquals(0, TollFeeCalculator.getTotalFeeCost(dates));
-        
+        assertEquals(8, TollFeeCalculator.getTollFeePerPassing(time1));
+        assertEquals(13, TollFeeCalculator.getTollFeePerPassing(time2));
+        assertEquals(18, TollFeeCalculator.getTollFeePerPassing(time3));
+        assertEquals(13, TollFeeCalculator.getTollFeePerPassing(time4));
+        assertEquals(8, TollFeeCalculator.getTollFeePerPassing(time5));
+        assertEquals(13, TollFeeCalculator.getTollFeePerPassing(time6));
+        assertEquals(18, TollFeeCalculator.getTollFeePerPassing(time7));
+        assertEquals(13, TollFeeCalculator.getTollFeePerPassing(time8));
+        assertEquals(8, TollFeeCalculator.getTollFeePerPassing(time9));
+        assertEquals(0, TollFeeCalculator.getTollFeePerPassing(time10));
     }
 
     @Test 
