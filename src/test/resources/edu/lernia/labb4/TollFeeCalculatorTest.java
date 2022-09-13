@@ -65,6 +65,17 @@ public class TollFeeCalculatorTest {
     }
 
     @Test
+    void PassingTwoTollStationsDuring60minutesAndOneShortAfterReturnsCorrectResult() {
+        LocalDateTime dates [] = new LocalDateTime[3];
+        dates[0] = LocalDateTime.of(2022, 05, 12, 15, 28, 40);
+        dates[1] = LocalDateTime.of(2022, 05, 12, 15, 55, 40);
+        dates[2] = LocalDateTime.of(2022, 05, 12, 16, 29, 40);
+
+        assertEquals(36, TollFeeCalculator.getTotalFeeCost(dates));
+        //Returns 18 for the 15:55 toll and 18 for the 16:29 
+    }
+
+    @Test
     void testingEveryTimeWindowForCorrectResponse () {
         LocalDateTime time1 = LocalDateTime.of(2022, 05, 12, 6, 29, 40);
         LocalDateTime time2 = LocalDateTime.of(2022, 05, 12, 6, 57, 40);
@@ -99,7 +110,18 @@ public class TollFeeCalculatorTest {
         dates[4] = LocalDateTime.of(2022, 05, 12, 17, 45, 40);
 
         assertEquals(60, TollFeeCalculator.getTotalFeeCost(dates));
-        //total sum is 85, but it should return max
+        //total sum is 85, but it should return max (60)
+    }
+
+    @Test 
+    void shouldReturnTotalValueIfITOtalValueIsLessTHen60 () {
+        LocalDateTime dates [] = new LocalDateTime[3];
+        dates[0] = LocalDateTime.of(2022, 05, 12, 6, 38, 40);
+        dates[1] = LocalDateTime.of(2022, 05, 12, 7, 55, 40);
+        dates[2] = LocalDateTime.of(2022, 05, 12, 15, 10, 40);
+
+        assertEquals(44, TollFeeCalculator.getTotalFeeCost(dates));
+        //total sum of the 3 dates is 44, so it should return 44
     }
 
     @Test
