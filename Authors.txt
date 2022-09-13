@@ -1,0 +1,6 @@
+Laboration 4: Road Toll 
+
+Created by Tobias Nordwall
+
+The goal of the exercise was to familiarize yourself with debugging and how we find problems in our code, 
+how we fix them, and how we can make sure the same error doesn't happen again using unit testing.
