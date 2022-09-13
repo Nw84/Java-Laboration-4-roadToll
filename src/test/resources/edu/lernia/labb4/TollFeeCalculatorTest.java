@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -23,7 +24,6 @@ public class TollFeeCalculatorTest {
 
         originalSystemOut = System.out;
 
-        // given
         systemOutContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(systemOutContent));
     }
@@ -35,11 +35,11 @@ public class TollFeeCalculatorTest {
 
 
     @Test
-    void inputAndOutputShouldBeSameLength() {
+    void inputAndOutputShouldBeSameLength() throws Exception {
         TollFeeCalculator.main(new String[] {"src/test/resources/Lab4.txt"});
-        
+ 
         assertEquals(219, systemOutContent.toString().length());
-        //18 x 10 rows + 39; 
+        //18 x 10 rows + 39;          
     }
 
     @Test
