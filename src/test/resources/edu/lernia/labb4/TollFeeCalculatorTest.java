@@ -7,6 +7,10 @@ import java.io.PrintStream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import java.io.BufferedReader;
+
+import java.io.FileReader;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,9 +41,20 @@ public class TollFeeCalculatorTest {
     @Test
     void inputAndOutputShouldBeSameLength() throws Exception {
         TollFeeCalculator.main(new String[] {"src/test/resources/Lab4.txt"});
- 
-        assertEquals(219, systemOutContent.toString().length());
-        //18 x 10 rows + 39;          
+        String line = "";
+        int counter = 0;  
+        FileReader file = new FileReader("src/test/resources/Lab4.txt");  
+        BufferedReader br = new BufferedReader(file);  
+    
+        while((line = br.readLine()) != null) {  
+            String words[] = line.split(", ");  
+            counter += words.length;  
+        }  
+            br.close();
+            assertEquals(counter * 18 + 39, systemOutContent.toString().length());
+            //18chars x 10 rows + 39 for the last line; 
+            //So if the bugg LocalDateTime[] dates = new LocalDateTime[dateStrings.length];
+            //whould come back would get 201 back instead of 219
     }
 
     @Test
@@ -88,6 +103,7 @@ public class TollFeeCalculatorTest {
         dates[4] = LocalDateTime.of(2022, 05, 12, 17, 45, 40);
 
         assertEquals(60, TollFeeCalculator.getTotalFeeCost(dates));
+        //total sum is 85, but it should return max
     }
 
     @Test
