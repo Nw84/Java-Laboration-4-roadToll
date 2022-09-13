@@ -16,7 +16,6 @@ public class TollFeeCalculator {
             Scanner sc = new Scanner(new File(inputFile));
             String[] dateStrings = sc.nextLine().split(", ");
             LocalDateTime[] dates = new LocalDateTime[dateStrings.length];
-            //En bugg eftersom bara 9/10 skrivs ut kolla så att båda strings är lika långa
             for(int i = 0; i < dates.length; i++) {
                 dates[i] = LocalDateTime.parse(dateStrings[i], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             }
@@ -47,7 +46,6 @@ public class TollFeeCalculator {
             }
         }
         return Math.min(totalFee, 60);
-        //Ska vara Math.min inte max, för annars returnar den aldrig mindre än 60
     } 
 
     public static int getTollFeePerPassing(LocalDateTime date) {
@@ -87,7 +85,7 @@ public class TollFeeCalculator {
         else {
             return false;
         }
-    } //En bugg där det returnerade 6 eller 7 istället för en boolean
+    } 
 
     public static void main(String[] args) {
         new TollFeeCalculator("src/test/resources/Lab4.txt");
